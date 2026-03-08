@@ -12,6 +12,12 @@ import {
 import { SiSupabase, SiFirebase } from 'react-icons/si';
 import heroImage from "../assets/Muhammad Sarim pic.png";
 
+// Import project images
+import javedNihariImage from "../assets/javed-nihari.jpg";
+import fishHubImage from "../assets/fishhub.jpg";
+import todoListImage from "../assets/todo-list.jpg";
+import moviesWebsiteImage from "../assets/movies-website.jpg";
+
 function Portfolio() {
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,6 +25,7 @@ function Portfolio() {
   const [darkMode, setDarkMode] = useState(true);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const projectScrollRef = useRef(null);
+  const testimonialIntervalRef = useRef(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -47,6 +54,39 @@ function Portfolio() {
       document.body.classList.remove('dark-mode');
     }
   }, [darkMode]);
+
+  // Auto-sliding testimonials
+  useEffect(() => {
+    startAutoSlide();
+    
+    return () => {
+      if (testimonialIntervalRef.current) {
+        clearInterval(testimonialIntervalRef.current);
+      }
+    };
+  }, []);
+
+  // Reset interval when currentTestimonial changes manually
+  useEffect(() => {
+    resetAutoSlide();
+  }, [currentTestimonial]);
+
+  const startAutoSlide = () => {
+    if (testimonialIntervalRef.current) {
+      clearInterval(testimonialIntervalRef.current);
+    }
+    
+    testimonialIntervalRef.current = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+  };
+
+  const resetAutoSlide = () => {
+    if (testimonialIntervalRef.current) {
+      clearInterval(testimonialIntervalRef.current);
+    }
+    startAutoSlide();
+  };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -128,6 +168,33 @@ function Portfolio() {
     }
   ];
 
+  const projects = [
+    {
+      image: javedNihariImage,
+      title: "Javed Nihari Website",
+      description: "A complete business website for a famous restaurant with online ordering system.",
+      tags: ["HTML5", "CSS3", "JavaScript"]
+    },
+    {
+      image: fishHubImage,
+      title: "FishHub Website",
+      description: "An informational platform for fishing enthusiasts with guides and community features.",
+      tags: ["React", "Bootstrap", "API"]
+    },
+    {
+      image: todoListImage,
+      title: "Todo List Application",
+      description: "A feature-rich task management app with local storage and dark mode.",
+      tags: ["JavaScript", "LocalStorage", "CSS"]
+    },
+    {
+      image: moviesWebsiteImage,
+      title: "Movies Website",
+      description: "A dynamic movie database website with search functionality (In Progress).",
+      tags: ["React", "API", "Tailwind"]
+    }
+  ];
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -166,7 +233,7 @@ function Portfolio() {
         </div>
       </nav>
 
-      {/* Hero Section with Image */}
+      {/* Hero Section */}
       <section className="hero" id="home">
         <div className="container">
           <div className="hero-grid">
@@ -185,7 +252,6 @@ function Portfolio() {
               </div>
             </div>
             
-            {/* Hero Image */}
             <div className="hero-image">
               <div className="image-wrapper">
                 <img src={heroImage} alt="Muhammad Sarim" />
@@ -217,7 +283,6 @@ function Portfolio() {
               solve real-world problems.
             </p>
 
-            {/* Stats moved from home section to about section */}
             <div className="about-stats">
               <div className="stat-item">
                 <h3>2+</h3>
@@ -244,7 +309,6 @@ function Portfolio() {
           <h2 className="section-title">My <span>Education</span></h2>
           
           <div className="education-grid">
-            {/* Education Card 1 - Matriculation */}
             <div className="education-card">
               <div className="education-icon">
                 <FaBook />
@@ -256,12 +320,11 @@ function Portfolio() {
                   <FaCalendar /> 2023 - 2025
                 </div>
                 <p>
-                  Completed Matriculation with Science subjects from a recognized board. Focused on Physics, Chemistry, Mathematics, and Computer Science which laid the foundation for technical education.
+                  Completed Matriculation with Science subjects. Focused on Physics, Chemistry, Mathematics, and Computer Science.
                 </p>
               </div>
             </div>
 
-            {/* Education Card 2 - Intermediate */}
             <div className="education-card">
               <div className="education-icon">
                 <FaUniversity />
@@ -273,24 +336,23 @@ function Portfolio() {
                   <FaCalendar /> 2025 - Present
                 </div>
                 <p>
-                  Currently pursuing Intermediate in Pre-Engineering with a focus on Mathematics, Physics, and Chemistry.
+                  Currently pursuing Intermediate in Pre-Engineering with focus on Mathematics, Physics, and Chemistry.
                 </p>
               </div>
             </div>
 
-            {/* Education Card 3 - Diploma */}
             <div className="education-card">
               <div className="education-icon">
                 <FaLaptopCode />
               </div>
               <div className="education-content">
-                <h3>Diploma in Web Development with (AI)</h3>
-                <h4>Certification by Saylani Mass IT Training Learning</h4>
+                <h3>Diploma in Web Development</h3>
+                <h4>Certification by Saylani Mass IT Training</h4>
                 <div className="education-date">
                   <FaCalendar /> 2025 - Present
                 </div>
                 <p>
-                  Currently pursuing a Professional Diploma in Web Development from Saylani Mass IT Training. Learning modern web technologies including HTML5, CSS3, JavaScript, React, Bootstrap, Tailwind CSS, and Supabase. Working on practical projects to build a strong portfolio and gain hands-on development experience.
+                  Currently pursuing Professional Diploma in Web Development. Learning HTML5, CSS3, JavaScript, React, Bootstrap, Tailwind CSS, and Supabase.
                 </p>
               </div>
             </div>
@@ -298,25 +360,24 @@ function Portfolio() {
         </div>
       </section>
 
-      {/* Work Experience Section */}
+      {/* Experience Section */}
       <section id="experience">
         <div className="container">
           <h2 className="section-title">Work <span>Experience</span></h2>
           
           <div className="experience-grid">
-            {/* Experience Card 1 */}
             <div className="experience-card">
               <div className="experience-icon">
                 <FaBriefcase />
               </div>
               <div className="experience-content">
                 <h3>Web Developer</h3>
-                <h4>at Saylani Mass IT Training Learning</h4>
+                <h4>at Saylani Mass IT Training</h4>
                 <div className="experience-date">
                   <FaCalendar /> 2025 - Present
                 </div>
                 <p>
-                  Currently working as a Web Developer at Saylani Mass IT Training Learning. Gaining hands-on experience in modern web development technologies and New Stacks working on real-world projects to enhance skills and build professional expertise.
+                  Working as Web Developer at Saylani Mass IT Training. Gaining hands-on experience in modern web technologies working on real-world projects.
                 </p>
               </div>
             </div>
@@ -357,12 +418,10 @@ function Portfolio() {
               <FaGithub className="skill-icon github" />
               <h3>GitHub</h3>
             </div>
-            {/* Supabase Skill */}
             <div className="skill-card">
               <SiSupabase className="skill-icon supabase" />
               <h3>Supabase</h3>
             </div>
-            {/* Firebase Skill */}
             <div className="skill-card">
               <SiFirebase className="skill-icon firebase" />
               <h3>Firebase</h3>
@@ -371,95 +430,35 @@ function Portfolio() {
         </div>
       </section>
 
-      {/* Projects Section with Horizontal Scroll */}
+      {/* Projects Section */}
       <section id="projects">
         <div className="container">
           <h2 className="section-title">My <span>Projects</span></h2>
           
           <div className="projects-wrapper">
-            {/* Left Scroll Button */}
             <button className="scroll-btn left" onClick={scrollLeft}>
               <FaChevronLeft />
             </button>
 
-            {/* Scrollable Projects Container */}
             <div className="projects-scroll" ref={projectScrollRef}>
-              
-              {/* Project Card 1 */}
-              <div className="project-card">
-                <div className="project-image"></div>
-                <div className="project-content">
-                  <h3>Javed Nihari Website</h3>
-                  <p>A complete business website for a famous restaurant with online ordering system.</p>
-                  <div className="project-tags">
-                    <span className="tag">HTML5</span>
-                    <span className="tag">CSS3</span>
-                    <span className="tag">JavaScript</span>
+              {projects.map((project, index) => (
+                <div key={index} className="project-card">
+                  <div className="project-image-wrapper">
+                    <img src={project.image} alt={project.title} className="project-img" />
                   </div>
-                  <div className="project-links">
-                    <a href="#"><FaGithub /> Code</a>
-                    <a href="#"><FaExternalLinkAlt /> Live Demo</a>
+                  <div className="project-content">
+                    <h3>{project.title}</h3>
+                    <p>{project.description}</p>
+                    <div className="project-tags">
+                      {project.tags.map((tag, tagIndex) => (
+                        <span key={tagIndex} className="tag">{tag}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Project Card 2 */}
-              <div className="project-card">
-                <div className="project-image"></div>
-                <div className="project-content">
-                  <h3>FishHub Website</h3>
-                  <p>An informational platform for fishing enthusiasts with guides and community features.</p>
-                  <div className="project-tags">
-                    <span className="tag">React</span>
-                    <span className="tag">Bootstrap</span>
-                    <span className="tag">API</span>
-                  </div>
-                  <div className="project-links">
-                    <a href="#"><FaGithub /> Code</a>
-                    <a href="#"><FaExternalLinkAlt /> Live Demo</a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Project Card 3 */}
-              <div className="project-card">
-                <div className="project-image"></div>
-                <div className="project-content">
-                  <h3>Todo List Application</h3>
-                  <p>A feature-rich task management app with local storage and dark mode.</p>
-                  <div className="project-tags">
-                    <span className="tag">JavaScript</span>
-                    <span className="tag">LocalStorage</span>
-                    <span className="tag">CSS</span>
-                  </div>
-                  <div className="project-links">
-                    <a href="#"><FaGithub /> Code</a>
-                    <a href="#"><FaExternalLinkAlt /> Live Demo</a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Project Card 4 */}
-              <div className="project-card">
-                <div className="project-image"></div>
-                <div className="project-content">
-                  <h3>Movies Website</h3>
-                  <p>A dynamic movie database website with search functionality (In Progress).</p>
-                  <div className="project-tags">
-                    <span className="tag">React</span>
-                    <span className="tag">API</span>
-                    <span className="tag">Tailwind</span>
-                  </div>
-                  <div className="project-links">
-                    <a href="#"><FaGithub /> Code</a>
-                    <a href="#"><FaExternalLinkAlt /> Live Demo</a>
-                  </div>
-                </div>
-              </div>
-
+              ))}
             </div>
 
-            {/* Right Scroll Button */}
             <button className="scroll-btn right" onClick={scrollRight}>
               <FaChevronRight />
             </button>
@@ -467,13 +466,12 @@ function Portfolio() {
         </div>
       </section>
 
-      {/* Testimonials Section with Slider */}
+      {/* Testimonials Section */}
       <section id="testimonials">
         <div className="container">
           <h2 className="section-title">Clients <span>say about me</span></h2>
           
           <div className="testimonials-slider-container">
-            {/* Navigation Buttons */}
             <button className="testimonial-nav prev" onClick={prevTestimonial}>
               <FaChevronLeft />
             </button>
@@ -524,7 +522,6 @@ function Portfolio() {
             </button>
           </div>
 
-          {/* Slider Dots */}
           <div className="testimonial-dots">
             {testimonials.map((_, index) => (
               <button
@@ -535,6 +532,10 @@ function Portfolio() {
                 <FaCircle />
               </button>
             ))}
+          </div>
+
+          <div className="auto-slide-indicator">
+            <div className="auto-slide-progress"></div>
           </div>
         </div>
       </section>
