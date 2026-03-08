@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   FaHtml5, FaCss3Alt, FaJs, FaReact, 
-  FaGitAlt, FaBootstrap, FaGithub, FaUser,
-  FaCalendar, FaMapMarkerAlt, FaGraduationCap,
-  FaEnvelope, FaPhone, FaLinkedin, FaExternalLinkAlt,
+  FaGitAlt, FaBootstrap, FaGithub, 
+  FaCalendar, FaMapMarkerAlt, FaEnvelope,  FaLinkedin, 
   FaPhoneAlt, FaBars, FaTimes, FaChevronLeft, FaChevronRight,
-  FaBook, FaLaptopCode, FaUniversity, FaDatabase, FaFire,
-  FaSun, FaMoon, FaBriefcase, FaStar, FaQuoteLeft, FaQuoteRight,
-  FaCircle
+  FaBook, FaLaptopCode, FaUniversity,  
+  FaSun, FaMoon, FaBriefcase, FaStar, FaCircle, FaTimesCircle, FaExpand
 } from 'react-icons/fa';
 import { SiSupabase, SiFirebase } from 'react-icons/si';
 import heroImage from "../assets/Muhammad Sarim pic.png";
@@ -17,6 +15,8 @@ import javedNihariImage from "../assets/javed-nihari.jpg";
 import fishHubImage from "../assets/fishhub.jpg";
 import todoListImage from "../assets/todo-list.jpg";
 import moviesWebsiteImage from "../assets/movies-website.jpg";
+import githubFinderImage from "../assets/githubfinder.jpg";
+import digitalClockImage from "../assets/digital-clock.jpg";
 
 function Portfolio() {
   const [loading, setLoading] = useState(true);
@@ -24,8 +24,11 @@ function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const projectScrollRef = useRef(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedTitle, setSelectedTitle] = useState('');
   const testimonialIntervalRef = useRef(null);
+  const modalRef = useRef(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -54,6 +57,29 @@ function Portfolio() {
       document.body.classList.remove('dark-mode');
     }
   }, [darkMode]);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (modalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [modalOpen]);
+
+  // Close modal on escape key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
 
   // Auto-sliding testimonials
   useEffect(() => {
@@ -100,24 +126,6 @@ function Portfolio() {
     setDarkMode(!darkMode);
   };
 
-  const scrollLeft = () => {
-    if (projectScrollRef.current) {
-      projectScrollRef.current.scrollBy({
-        left: -400,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const scrollRight = () => {
-    if (projectScrollRef.current) {
-      projectScrollRef.current.scrollBy({
-        left: 400,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   const nextTestimonial = () => {
     setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
   };
@@ -128,6 +136,18 @@ function Portfolio() {
 
   const goToTestimonial = (index) => {
     setCurrentTestimonial(index);
+  };
+
+  const openModal = (image, title) => {
+    setSelectedImage(image);
+    setSelectedTitle(title);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedImage(null);
+    setSelectedTitle('');
   };
 
   const testimonials = [
@@ -146,25 +166,11 @@ function Portfolio() {
       image: "https://randomuser.me/api/portraits/women/44.jpg"
     },
     {
-      name: "Michael Chen",
-      position: "CTO, Digital Agency",
-      rating: 4,
-      text: "Great experience working with Muhammad. He understood our requirements perfectly and delivered beyond expectations. Will definitely work with him again. His problem-solving skills are top-notch.",
-      image: "https://randomuser.me/api/portraits/men/46.jpg"
-    },
-    {
       name: "Emily Davis",
       position: "Marketing Director, Brandify",
       rating: 5,
       text: "Muhammad is a talented developer who goes above and beyond. He created a stunning website for our campaign that exceeded all our expectations. Highly professional and creative.",
       image: "https://randomuser.me/api/portraits/women/63.jpg"
-    },
-    {
-      name: "Robert Wilson",
-      position: "Owner, Wilson Enterprises",
-      rating: 5,
-      text: "Exceptional work! Muhammad delivered a high-quality website on time and within budget. His communication throughout the project was excellent. Will definitely hire again.",
-      image: "https://randomuser.me/api/portraits/men/75.jpg"
     }
   ];
 
@@ -173,25 +179,37 @@ function Portfolio() {
       image: javedNihariImage,
       title: "Javed Nihari Website",
       description: "A complete business website for a famous restaurant with online ordering system.",
-      tags: ["HTML5", "CSS3", "JavaScript"]
+      tags: ["React", "CSS3"]
     },
     {
       image: fishHubImage,
       title: "FishHub Website",
-      description: "An informational platform for fishing enthusiasts with guides and community features.",
-      tags: ["React", "Bootstrap", "API"]
+      description: "An informational platform for fishing enthusiasts with guides.",
+      tags: ["React", "CSS3", "API"]
     },
     {
       image: todoListImage,
       title: "Todo List Application",
       description: "A feature-rich task management app with local storage and dark mode.",
-      tags: ["JavaScript", "LocalStorage", "CSS"]
+      tags: ["React", "LocalStorage", "CSS"]
     },
     {
       image: moviesWebsiteImage,
       title: "Movies Website",
       description: "A dynamic movie database website with search functionality (In Progress).",
-      tags: ["React", "API", "Tailwind"]
+      tags: ["React", "API", "CSS3"]
+    },
+    {
+      image: githubFinderImage,
+      title: "Github User Finder",
+      description: "A fully functional Github User Finder with API system.",
+      tags: ["React", "CSS3", "API"]
+    },
+    {
+      image: digitalClockImage,
+      title: "Digital Clock",
+      description: "Real-time Digital application with displays hours, minutes, and seconds.",
+      tags: ["React", "API", "CSS3"]
     }
   ];
 
@@ -239,9 +257,9 @@ function Portfolio() {
           <div className="hero-grid">
             <div className="hero-content">
               <h1>
-                Hi, I'm <span className="gradient-text">Muhammad Sarim</span><br />
-                <span className="gradient-text">Front-End Developer</span>
+              <span className="gradient-text">Muhammad Sarim</span><br />
               </h1>
+              <h2> <span>Front-End Developer</span></h2>
               <p className="hero-description">
                 I craft modern, responsive, and user-friendly websites using HTML, CSS, JavaScript, Bootstrap, and
                 React to bring ideas to life on the web.
@@ -267,14 +285,14 @@ function Portfolio() {
           <h2 className="section-title">About <span>Me</span></h2>
           <div className="about-content-full">
             <p>
-              I am a passionate Full Stack Developer student currently completing my Intermediate education
+              I am a passionate Frontend Developer student currently completing my Intermediate education
               and pursuing a professional diploma in Full Stack Development. I specialize in building
               responsive, user-friendly web applications using HTML, CSS, JavaScript, React, Bootstrap, Git,
               and GitHub.
             </p>
             <p>
-              I have developed multiple practical projects including a Business Website (Javed Nihari),
-              FishHub Website, Todo List Application, and a Movies Website (in progress). Through these
+              I have developed multiple practical personal projects including a Business Website (Javed Nihari),
+              FishHub Website, Todo List Application etc. Through these
               projects, I have gained hands-on experience in component-based architecture, state management,
               and clean UI development.
             </p>
@@ -430,52 +448,56 @@ function Portfolio() {
         </div>
       </section>
 
-      {/* Projects Section */}
+      {/* Projects Section - Grid Layout */}
       <section id="projects">
         <div className="container">
           <h2 className="section-title">My <span>Projects</span></h2>
           
-          <div className="projects-wrapper">
-            <button className="scroll-btn left" onClick={scrollLeft}>
-              <FaChevronLeft />
-            </button>
-
-            <div className="projects-scroll" ref={projectScrollRef}>
-              {projects.map((project, index) => (
-                <div key={index} className="project-card">
-                  <div className="project-image-wrapper">
-                    <img src={project.image} alt={project.title} className="project-img" />
-                  </div>
-                  <div className="project-content">
-                    <h3>{project.title}</h3>
-                    <p>{project.description}</p>
-                    <div className="project-tags">
-                      {project.tags.map((tag, tagIndex) => (
-                        <span key={tagIndex} className="tag">{tag}</span>
-                      ))}
-                    </div>
+          <div className="projects-grid">
+            {projects.map((project, index) => (
+              <div key={index} className="project-card" onClick={() => openModal(project.image, project.title)}>
+                <div className="project-image-wrapper">
+                  <img src={project.image} alt={project.title} className="project-img" />
+                  <div className="image-overlay">
+                    <FaExpand className="expand-icon" />
                   </div>
                 </div>
-              ))}
-            </div>
-
-            <button className="scroll-btn right" onClick={scrollRight}>
-              <FaChevronRight />
-            </button>
+                <div className="project-content">
+                  <h3>{project.title}</h3>
+                  <p>{project.description}</p>
+                  <div className="project-tags">
+                    {project.tags.map((tag, tagIndex) => (
+                      <span key={tagIndex} className="tag">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
+
+      {/* Image Modal */}
+      {modalOpen && (
+        <div className="modal-overlay" onClick={closeModal} ref={modalRef}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal}>
+              <FaTimesCircle />
+            </button>
+            <img src={selectedImage} alt={selectedTitle} className="modal-image" />
+            <p className="modal-caption">{selectedTitle}</p>
+          </div>
+        </div>
+      )}
 
       {/* Testimonials Section */}
       <section id="testimonials">
         <div className="container">
           <h2 className="section-title">Clients <span>say about me</span></h2>
-          
           <div className="testimonials-slider-container">
             <button className="testimonial-nav prev" onClick={prevTestimonial}>
               <FaChevronLeft />
             </button>
-
             <div className="testimonials-slider">
               {testimonials.map((testimonial, index) => (
                 <div 
@@ -491,7 +513,6 @@ function Portfolio() {
                         <p>{testimonial.position}</p>
                       </div>
                     </div>
-                    
                     <div className="testimonial-rating">
                       {[...Array(5)].map((_, i) => (
                         <FaStar 
@@ -500,28 +521,17 @@ function Portfolio() {
                         />
                       ))}
                     </div>
-                    
-                    <div className="quote-icon">
-                      <FaQuoteLeft />
-                    </div>
-                    
                     <p className="testimonial-text">
                       "{testimonial.text}"
                     </p>
-                    
-                    <div className="quote-icon-right">
-                      <FaQuoteRight />
-                    </div>
                   </div>
                 </div>
               ))}
             </div>
-
             <button className="testimonial-nav next" onClick={nextTestimonial}>
               <FaChevronRight />
             </button>
           </div>
-
           <div className="testimonial-dots">
             {testimonials.map((_, index) => (
               <button
@@ -533,7 +543,6 @@ function Portfolio() {
               </button>
             ))}
           </div>
-
           <div className="auto-slide-indicator">
             <div className="auto-slide-progress"></div>
           </div>
