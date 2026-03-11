@@ -161,14 +161,14 @@ nav {
 .menu-toggle {
   display: none;
   font-size: 2rem;
-  color: white;
+  /* color: white; */
   cursor: pointer;
   z-index: 1001;
+  color: #4f46e5;
   transition: 0.3s;
 }
 
 .menu-toggle:hover {
-  color: #4f46e5;
   transform: scale(1.1);
 }
 
