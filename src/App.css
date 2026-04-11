@@ -267,6 +267,10 @@ body.light-mode .client-info h4,
 body.light-mode .contact-item h4 {
   color: #1e293b;
 }
+body.light-mode .skill-icon.nextjs { color: #000000; }
+body.light-mode .skill-icon.express { color: #000000; }
+body.light-mode .skill-icon.vercel { color: #000000; }
+body.light-mode .skill-icon.github { color: #000000; }
 
 body.light-mode .tag {
   background: rgba(79, 70, 229, 0.1);
@@ -992,11 +996,16 @@ section {
 .skill-icon.css { color: #264de4; }
 .skill-icon.js { color: #f0db4f; }
 .skill-icon.react { color: #61dbfb; }
-.skill-icon.git { color: #f34f29; }
+.skill-icon.nextjs { color: #ffffff; }
+.skill-icon.tailwind { color: #38bdf8; }
 .skill-icon.bootstrap { color: #7952b3; }
-.skill-icon.github { color: #ffffff; }
-.skill-icon.supabase { color: #3ECF8E; }
+.skill-icon.nodejs { color: #339933; }
+.skill-icon.express { color: #ffffff; }
+.skill-icon.mongodb { color: #47A248; }
 .skill-icon.firebase { color: #FFCA28; }
+.skill-icon.vercel { color: #ffffff; }
+.skill-icon.git { color: #f34f29; }
+.skill-icon.github { color: #ffffff; }
 
 /* Projects Grid Section */
 .projects-grid {
