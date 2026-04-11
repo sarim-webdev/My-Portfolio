@@ -316,7 +316,7 @@ function Portfolio() {
                 <a href="#contact" className="btn btn-primary">
                   Hire Me
                 </a>
-                <a href="/Sarim CV.pdf" download className="btn btn-outline">
+                <a href="/Muhammad Sarim CV.pdf" download className="btn btn-outline">
                   Download CV
                 </a>
               </div>
